@@ -10,6 +10,7 @@ const App: React.FC = () => {
 
   const handleClick = () => {
     setCardNumber((prevNumber) => prevNumber + 1);
+    console.log(cardNumber);
     setCards((prevCards) => [...prevCards, `card-${prevCards.length}`]);
   };
 

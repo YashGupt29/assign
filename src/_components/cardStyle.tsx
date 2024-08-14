@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from "react";
+import { forwardRef, useState } from "react";
 import { Rnd } from "react-rnd";
 import Modal from "./modal";
 import { X } from "lucide-react";
