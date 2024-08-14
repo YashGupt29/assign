@@ -6,9 +6,11 @@ import Xarrow, { Xwrapper } from "react-xarrows";
 const App: React.FC = () => {
   const [cardNumber, setCardNumber] = useState<number>(0);
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
+  const [cards, setCards] = useState<string[]>([]);
 
   const handleClick = () => {
     setCardNumber((prevNumber) => prevNumber + 1);
+    setCards((prevCards) => [...prevCards, `card-${prevCards.length}`]);
   };
 
   const handleDraw = (index: number) => {
@@ -17,6 +19,11 @@ const App: React.FC = () => {
     } else {
       setSelectedCard(null);
     }
+  };
+
+  const removeCard = (id: string) => {
+    setCards((prevCards) => prevCards.filter((cardId) => cardId !== id));
+    setCardNumber((prevNumber) => prevNumber - 1);
   };
 
   return (
@@ -32,29 +39,23 @@ const App: React.FC = () => {
         </div>
         <div className="flex flex-wrap gap-4">
           <Xwrapper>
-            {Array.from({ length: cardNumber }).map((_, index) => {
-              const cardId = `card-${index}`;
-              const isDisabled =
-                selectedCard !== null && selectedCard === index;
-
-              return (
-                <div key={index} style={{ position: "relative" }}>
-                  <CardStyle
-                    id={cardId}
-                    onClick={() => handleDraw(index)}
-                    disabled={isDisabled}
-                    setCardNumber={setCardNumber}
+            {cards.map((cardId, index) => (
+              <div key={cardId} style={{ position: "relative" }}>
+                <CardStyle
+                  id={cardId}
+                  onClick={() => handleDraw(index)}
+                  removeCard={() => removeCard(cardId)}
+                  disabled={selectedCard !== null && selectedCard === index}
+                />
+                {selectedCard !== null && selectedCard !== index && (
+                  <Xarrow
+                    start={`card-${selectedCard}`}
+                    end={cardId}
+                    color="black"
                   />
-                  {selectedCard !== null && selectedCard !== index && (
-                    <Xarrow
-                      start={`card-${selectedCard}`}
-                      end={cardId}
-                      color="black"
-                    />
-                  )}
-                </div>
-              );
-            })}
+                )}
+              </div>
+            ))}
           </Xwrapper>
         </div>
       </div>

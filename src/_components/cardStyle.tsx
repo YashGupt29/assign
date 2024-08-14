@@ -7,12 +7,13 @@ import { useXarrow } from "react-xarrows";
 
 interface CardProps {
   id: string;
-  setCardNumber: React.Dispatch<React.SetStateAction<number>>;
+  removeCard: (id: string) => void; // Function to remove card
   onClick: () => void;
   disabled: boolean;
 }
+
 const CardStyle = forwardRef<HTMLDivElement, CardProps>(
-  ({ setCardNumber, onClick, id, disabled }, ref) => {
+  ({ removeCard, onClick, id, disabled }, ref) => {
     const [showMore] = useState<boolean>(false);
     const text = `
       Welcome to our service, where you can experience the best features designed to bring you seamless interactions and top-notch performance.
@@ -35,8 +36,9 @@ const CardStyle = forwardRef<HTMLDivElement, CardProps>(
     };
 
     const handleClick = () => {
-      setCardNumber((prevNumber: number) => prevNumber - 1);
+      removeCard(id); // Call the removeCard function with the card's id
     };
+
     const updateArrow = useXarrow();
     return (
       <Rnd
@@ -49,12 +51,9 @@ const CardStyle = forwardRef<HTMLDivElement, CardProps>(
         id={id}
         minWidth={200}
         minHeight={100}
-        style={{
-          borderRadius: "8px",
-          boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)",
-        }}
         onDrag={updateArrow}
         onDragStop={updateArrow}
+        style={{ overflow: "hidden" }}
       >
         <div
           ref={ref}
